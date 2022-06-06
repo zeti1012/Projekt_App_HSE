@@ -13,5 +13,16 @@ const benutzerExists = check('benutzername').custom(async(value)=>{
 
 const benutzertypValidation = check('benutzertyp').isIn(["Besitzer", "Handwerker", "Monteur", "Produktionsmitarbeiter"]).withMessage('Benutzertyp existiert nicht')
 
+const loginFieldsCheck = check('benutzername').custom(async(value,{req})=>{
+  const benutzer = await db.query('Select * from benutzer where benutzername = $1',[value])
+  if (!benutzer.rows.length){
+    throw new Error('Benutzername nicht vorhanden')
+  }
+  const validPassword = await compare(req.body.kennwort, benutzer.rows[0].kennwort)
+  if (!validPassword){
+    throw new Error('Falsches Passwort')
+  }
+  req.benutzer = benutzer.rows[0]
+})
 
-module.exports ={ registerValidation: [kennwort,benutzerExists, benutzertypValidation]}
+module.exports ={ registerValidation: [kennwort,benutzerExists, benutzertypValidation], loginValidation:[loginFieldsCheck]}

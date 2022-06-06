@@ -1,5 +1,7 @@
 const { hash } = require('bcryptjs');
 const db = require('../db');
+const {sign} = require('jsonwebtoken');
+const {SECRET} = require('../constants')
 
 
 exports.getUsers = async (req, res) =>{
@@ -29,7 +31,39 @@ exports.register = async (req, res) =>{
     return res.status(500).json({
       error: error.message
     })
+    }
+}
+
+exports.login = async(req, res) =>{
+  let benutzer = req.benutzer
+  let payload = {
+    id: benutzer.id,
+    benutzername: benutzer.benutzername
+  }
+  try {
+    const token = await sign(payload, SECRET)
+    return res.status(200).cookie('token', token,{httpOnly: true}).json({
+      success: true,
+      message: 'Erfolgreich eingeloggt'
+    })
+  } catch (error) {
+    console.error(error.message)
     
   }
+}
 
+exports.logout = async (req,res)=>{
+   
+  try {
+    return res.status(200).clearCookie('token',{httpOnly: true}).json({
+      success: true,
+      message: 'Erfolgreich ausgeloggt'
+    })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({
+      error: error.message
+    })
+    
+  }
 }
