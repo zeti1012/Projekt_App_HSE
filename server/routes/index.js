@@ -1,6 +1,9 @@
 const express = require("express");
+const { getUsers, register } = require("../controllers/auth");
 const router = express.Router();
 const db = require("../db");
+const { validationMiddleware } = require("../middleware/validation-middleware");
+const { registerValidation } = require("../validators");
 
 //get Bauteileinfo
 router.get('/api/:id', async (req, res)=>{
@@ -59,10 +62,12 @@ router.get('/api/:benutzername/benutzertyp', async (req, res)=>{
 
 
 
-//get Benutzerauthentifizierung
+//get Benutzer
 
+router.get('/get-benutzer', getUsers)
 
-//
+//Post Benuter/Passwort
+router.post('/register', registerValidation, validationMiddleware, register )
 
 
 module.exports = router;
