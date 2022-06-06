@@ -16,11 +16,11 @@ const opts = {
 
 passport.use(
   new Strategy(opts, async ({id}, done) =>{
-    console.log("hier")
     try {
       const {rows} = await db.query('Select id, benutzername from benutzer where id =$1', [id])
-      if (!rows.lenght){
-        throw new Error ('401 Nicht authorisiert')
+      console.log(rows.length)
+      if (!rows.length){
+        throw new Error('401 Nicht authorisiert')
       }
       let benutzer = {id: rows[0].id, benutzername: rows[0].benutzername}
       return await done(null,benutzer)
