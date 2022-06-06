@@ -12,7 +12,17 @@ const BauteilOptionen = () => {
    
     try {
       const response = await PathFinder.get(`/${id}/historie`)
-      setHistorie(response.data.data.historie)
+      const historie = response.data.data.historie
+      
+      let newHistorie = historie.map((aufgabe)=>{
+        let datumauspostgres = new Date(aufgabe.aufgabe_abschlussdatum)
+        let abschlussdatum = [datumauspostgres.getDate(), datumauspostgres.getMonth()+1, datumauspostgres.getFullYear()].join('.')
+        aufgabe.aufgabe_abschlussdatum =  abschlussdatum
+        return aufgabe
+      })
+      
+      setHistorie(newHistorie)
+      
       
 
     } catch (err) {
@@ -32,9 +42,9 @@ const BauteilOptionen = () => {
               <table>
                 <thead>
                   <tr className='big-primary'>
-                    <th scope="col">Zeitstempel</th>
                     <th scope="col">Typ</th>
                     <th scope="col">Beschreibung</th>
+                    <th scope="col">Fertigstellungsdatum</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -42,13 +52,13 @@ const BauteilOptionen = () => {
                     return (
                       <tr key={aufgabe.id}>
                         <td>
-                          {aufgabe.aufgabe_timestamp}
-                        </td>
-                        <td>
                           {aufgabe.aufgabe_typ}
                         </td>
                         <td>
                           {aufgabe.aufgabe_beschreibung}
+                        </td>
+                        <td>
+                          {aufgabe.aufgabe_abschlussdatum}
                         </td>
                       </tr>
                     )

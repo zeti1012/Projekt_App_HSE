@@ -59,10 +59,36 @@ create table bauteile(
     teilegruppe_id BIGINT NOT NULL REFERENCES teilegruppen(id) 
 );
 
-insert into bauteile (bauteile_name, bauteile_beschreibung, bauteile_bild, teilegruppe_id) values ('Tür1','Dummy','Link', 6);
-insert into bauteile (bauteile_name, bauteile_beschreibung, bauteile_bild, teilegruppe_id) values ('Tür2','Dummy','Link', 6);
-insert into bauteile (bauteile_name, bauteile_beschreibung, bauteile_bild, teilegruppe_id) values ('Tür3','Dummy','Link', 6);
-insert into bauteile (bauteile_name, bauteile_beschreibung, bauteile_bild, teilegruppe_id) values ('Tür4','Dummy','Link', 6);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Tür1','Dummy','Link', 6);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Tür2','Dummy','Link', 6);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Tür3','Dummy','Link', 6);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Tür4','Dummy','Link', 6);
+
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fenster1','Dummy','Link', 5);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fenster2','Dummy','Link', 5);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fenster3','Dummy','Link', 5);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fenster4','Dummy','Link', 5);
+
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Dach1','Dummy','Link', 4);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Dach2','Dummy','Link', 4);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Dach3','Dummy','Link', 4);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Dach4','Dummy','Link', 4);
+
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fußboden1','Dummy','Link', 3);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fußboden2','Dummy','Link', 3);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fußboden3','Dummy','Link', 3);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Fußboden4','Dummy','Link', 3);
+
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Innenwand1','Dummy','Link', 2);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Innenwand2','Dummy','Link', 2);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Innenwand3','Dummy','Link', 2);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Innenwand4','Dummy','Link', 2);
+
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Außenwand1','Dummy','Link', 1);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Außenwand2','Dummy','Link', 1);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Außenwand3','Dummy','Link', 1);
+insert into bauteile (bauteil_name, bauteil_beschreibung, bauteil_bild, teilegruppe_id) values ('Außenwand4','Dummy','Link', 1);
+
 
 "Teile"
 
@@ -100,17 +126,34 @@ create table aufgaben(
     OR aufgabe_typ = 'Modernisierung' OR aufgabe_typ = 'Demontage' OR aufgabe_typ = 'Umzug'
     OR aufgabe_typ = 'Re-/Upcycling'),
     aufgabe_beschreibung TEXT NOT NULL,
-    aufgabe_timestamp TIMESTAMP NOT NULL,
+    aufgabe_abschlussdatum DATE,
+    aufgabe_timestamp_start TIMESTAMP,
+    aufgabe_timestamp_end TIMESTAMP,
+    aufgabe_dauer INTERVAL,
     benutzer_id BIGINT NOT NULL REFERENCES benutzer(id),
     bauteil_id  BIGINT NOT NULL REFERENCES bauteile(id)
 );
 
-insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_timestamp, benutzer_id, bauteil_id) 
-values ('Produktion','Bauteil ist fertiggestellt','2022-05-27 10:35:22', 4, 1);
+insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_abschlussdatum,aufgabe_timestamp_start,aufgabe_timestamp_end, aufgabe_dauer, benutzer_id, bauteil_id) 
+values ('Produktion','Bauteil ist fertiggestellt','2022-05-27', '2022-05-27 08:01:00', '2022-05-27 22:08:00', AGE('2022-05-27 22:08:00','2022-05-27 08:01:00') ,4, 1);
 
-insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_timestamp, benutzer_id, bauteil_id) 
-values ('Montage','Bauteil ist montiert','2022-05-28 15:40:00', 3, 1);
-insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_timestamp, benutzer_id, bauteil_id) 
-values ('Produktion','Bauteil ist fertiggestellt','2022-05-21 15:40:00', 3, 2);
+################################################################
+
+insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_abschlussdatum,aufgabe_timestamp_start,aufgabe_timestamp_end, aufgabe_dauer, benutzer_id, bauteil_id) 
+values ('Produktion','Bauteil ist verpackt','2022-05-28', '2022-05-28 07:35:30', '2022-05-28 08:40:20', AGE('2022-05-28 08:40:20','2022-05-28 07:35:30') ,4, 1);
+
+insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_abschlussdatum,aufgabe_timestamp_start,aufgabe_timestamp_end, aufgabe_dauer, benutzer_id, bauteil_id) 
+values ('Produktion','Bauteil ist zur Montage überliefert','2022-05-28', '2022-05-28 09:00:30', '2022-05-28 10:02:20', AGE('2022-05-28 10:02:20','2022-05-28 09:00:30') ,4, 1);
+
+
+
+
+insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_abschlussdatum,aufgabe_timestamp_start,aufgabe_timestamp_end, aufgabe_dauer, benutzer_id, bauteil_id)
+values ('Montage','Bauteil ist montiert','2022-05-28','2022-05-28 10:34:50', '2022-05-28 12:08:00', AGE('2022-05-28 12:08:00','2022-05-28 10:34:50'), 3, 1);
+
+
+Tür2
+insert into aufgaben (aufgabe_typ, aufgabe_beschreibung, aufgabe_abschlussdatum,aufgabe_timestamp_start,aufgabe_timestamp_end, aufgabe_dauer, benutzer_id, bauteil_id)
+values ('Produktion','Bauteil ist fertiggestellt','2022-05-28','2022-05-28 10:45:00', '2022-05-28 21:45:20', AGE('2022-05-28 21:45:20','2022-05-28 10:45:00'), 4, 2);
 
 
