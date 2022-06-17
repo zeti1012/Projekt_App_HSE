@@ -9,10 +9,11 @@ const {userAuth} = require('../middleware/auth-middleware')
 //get Bauteileinfo
 router.get('/api/:id', async (req, res)=>{
     try {
+        
     
         const id = req.params.id;
         const results = await db.query("select * from bauteile where id=$1", [id]) 
-
+        
         res.status(200).json({
             status: "success",
             data: {
@@ -77,6 +78,8 @@ router.post('/login', loginValidation, validationMiddleware, login)
 //Logout
 
 router.get('/logout', userAuth, logout)
+
+
 
 
 module.exports = router;
